@@ -9,7 +9,13 @@ import CourseRoutes from "./kambaz/courses/routes.js";
 import AssignmentRoutes from "./kambaz/assignments/routes.js";
 import EnrollmentsRoutes from "./kambaz/enrollments/routes.js";
 import session from "express-session";
+import mongoose from "mongoose";
 
+const isDevelopment = process.env.SERVER_ENV === "development";
+
+const CONNECTION_STRING =
+  process.env.DATABASE_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kambaz";
+mongoose.connect(CONNECTION_STRING);
 const app = express();
 app.use(
   cors({
@@ -26,12 +32,12 @@ if (process.env.SERVER_ENV !== "development") {
   sessionOptions.proxy = true;
   sessionOptions.cookie = {
     sameSite: "none",
-    secure: true,
+    secure: !isDevelopment,
   };
 }
 app.use(session(sessionOptions));
 app.use(express.json());
-UserRoutes(app, db);
+UserRoutes(app);
 CourseRoutes(app, db);
 AssignmentRoutes(app, db);
 EnrollmentsRoutes(app, db);
