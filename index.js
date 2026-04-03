@@ -3,11 +3,11 @@ import Hello from "./Hello.js";
 import Lab5 from "./Lab5/index.js";
 import express from "express";
 import cors from "cors";
-import db from "./kambaz/database/index.js";
 import UserRoutes from "./kambaz/users/routes.js";
 import CourseRoutes from "./kambaz/courses/routes.js";
 import AssignmentRoutes from "./kambaz/assignments/routes.js";
 import EnrollmentsRoutes from "./kambaz/enrollments/routes.js";
+import ModulesRoutes from "./kambaz/modules/routes.js";
 import session from "express-session";
 import mongoose from "mongoose";
 
@@ -38,9 +38,10 @@ if (process.env.SERVER_ENV !== "development") {
 app.use(session(sessionOptions));
 app.use(express.json());
 UserRoutes(app);
-CourseRoutes(app, db);
-AssignmentRoutes(app, db);
-EnrollmentsRoutes(app, db);
+CourseRoutes(app);
+AssignmentRoutes(app);
+EnrollmentsRoutes(app);
+ModulesRoutes(app);
 Lab5(app);
 Hello(app);
 app.listen(process.env.PORT || 4000);
